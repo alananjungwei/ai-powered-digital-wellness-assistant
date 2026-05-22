@@ -26,6 +26,15 @@ lifestyle, and wellbeing indicators.
 """
 )
 
+with st.sidebar:
+
+    st.header("🤖 AI Settings")
+
+    openai_api_key = st.text_input(
+        "OpenAI API Key",
+        type="password"
+    )
+
 #st.success("Models loaded successfully!")
 
 # Level 1
@@ -525,6 +534,105 @@ if st.button("Analyze"):
         user_scaled
     )[0]
 
+    # ---------------------
+    # AI Wellness Summary
+    # ---------------------
+
+    ai_feedback = None
+
+    if openai_api_key:
+
+        try:
+
+            client = OpenAI(
+                api_key=openai_api_key
+            )
+
+            prompt = f"""
+            User Name: {user_name}
+
+            High Risk Probability:
+            {probability:.1%}
+
+            Digital Dependence Score:
+            {dependence_score:.1f}
+
+            Age:
+            {age}
+
+            Device Hours:
+            {device_hours_per_day}
+
+            Physical Activity Days:
+            {physical_activity_days}
+
+            Sleep Hours:
+            {sleep_hours}
+
+            Sleep Quality:
+            {sleep_quality}
+
+            Anxiety Score:
+            {anxiety_score}
+
+            Depression Score:
+            {depression_score}
+
+            Stress Level:
+            {stress_level}
+
+            Happiness Score:
+            {happiness_score}
+
+            Focus Score:
+            {focus_score}
+
+            Give:
+
+            1. A friendly explanation
+            2. Positive observations
+            3. Areas for improvement
+            4. Practical wellness suggestions
+
+            Keep it under 150 words.
+            """
+
+            response = client.chat.completions.create(
+                model="gpt-4.1-mini",
+                messages=[
+                    {
+                        "role":"system",
+                        "content":
+                        """
+                        You are a supportive
+                        digital wellness coach.
+
+                        Never diagnose.
+
+                        Be encouraging,
+                        constructive and practical.
+                        """
+                    },
+                    {
+                        "role":"user",
+                        "content":prompt
+                    }
+                ]
+            )
+
+            ai_feedback = (
+                response
+                .choices[0]
+                .message
+                .content
+            )
+
+        except Exception as e:
+
+            st.error(
+                f"OpenAI Error: {e}"
+            )
+
 
     # ---------------------
     # Display
@@ -578,94 +686,12 @@ if st.button("Analyze"):
         f"{dependence_score:.1f}"
     )
 
-    # ---------------------
-    # Recommendations
-    # ---------------------
-
-    recommendations = []
-
-    if sleep_hours < 7:
-        recommendations.append(
-            "😴 Try aiming for 7–9 hours of sleep each night to support recovery, mood, and concentration."
-        )
-
-    if sleep_quality <= 2:
-        recommendations.append(
-            "🌙 Improving sleep quality may positively impact your wellbeing and daily energy levels."
-        )
-
-    if physical_activity_days < 3:
-        recommendations.append(
-            "🏃 Consider adding more physical activity throughout the week, even short walks can help."
-        )
-
-    if device_hours_per_day >= 12:
-        recommendations.append(
-            "📱 Your screen time appears quite high. Regular device-free breaks may reduce mental fatigue."
-        )
-
-    if phone_unlocks >= 250:
-        recommendations.append(
-            "📵 Frequent phone checking may contribute to distraction. Consider reducing unnecessary notifications."
-        )
-
-    if stress_level >= 8:
-        recommendations.append(
-            "🧘 Elevated stress levels detected. Relaxation techniques and regular breaks may help."
-        )
-
-    if anxiety_score >= 18:
-        recommendations.append(
-            "💙 You reported high anxiety levels. Reaching out to trusted people and maintaining healthy routines may be beneficial."
-        )
-
-    if focus_score <= 25:
-        recommendations.append(
-            "🎯 A distraction-free environment may help improve focus and productivity."
-        )
-
-    if happiness_score <= 3:
-        recommendations.append(
-            "😊 Spending time outdoors, exercising, or connecting socially may help improve overall wellbeing."
-        )
-
-    if recommendations:
+    if ai_feedback:
 
         st.subheader(
-            "🌱 Personalized Recommendations"
+            "🤖 AI Wellness Coach"
         )
 
-        for rec in recommendations:
-            st.write(rec)
-
-    else:
-
-        st.success(
-            "Great job! No major lifestyle concerns were detected from the information provided."
+        st.write(
+            ai_feedback
         )
-
-    strengths = []
-
-    if sleep_hours >= 7:
-        strengths.append("😴 Healthy sleep duration")
-
-    if physical_activity_days >= 4:
-        strengths.append("🏃 Good physical activity habits")
-
-    if happiness_score >= 8:
-        strengths.append("😊 Positive wellbeing")
-
-    if focus_score >= 75:
-        strengths.append("🎯 Strong concentration ability")
-
-    if device_hours_per_day <= 4:
-        strengths.append("📱 Balanced screen usage")
-
-    if strengths:
-
-        st.subheader(
-            "🌟 Positive Habits"
-        )
-
-        for item in strengths:
-            st.write(item)
