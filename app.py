@@ -44,6 +44,14 @@ st.caption(
     "Answer a few questions below to receive your personalized digital wellness assessment."
 )
 
+gender = st.selectbox(
+    "Gender",
+    [
+        "Male",
+        "Female"
+    ]
+)
+
 
 age = st.number_input(
     "Age",
@@ -52,7 +60,60 @@ age = st.number_input(
     value=30
 )
 
+region = st.selectbox(
+    "Region",
+    [
+        "Africa",
+        "Asia",
+        "Europe",
+        "Middle East",
+        "North America",
+        "South America"
+    ]
+)
+
+education_level = st.selectbox(
+    "Education Level",
+    [
+        "High School",
+        "Bachelor",
+        "Master",
+        "PhD"
+    ]
+)
+
+income_level = st.selectbox(
+    "Income Level",
+    [
+        "Low",
+        "Lower-Mid",
+        "Upper-Mid",
+        "High"
+    ]
+)
+
+daily_role = st.selectbox(
+    "Primary Daily Role",
+    [
+        "Student",
+        "Full-time Employee",
+        "Part-time/Shift",
+        "Caregiver/Home",
+        "Unemployed_Looking"
+    ]
+)
+
 st.header("📱 Digital Habits")
+
+device_type = st.selectbox(
+    "Primary Device",
+    [
+        "Android",
+        "iPhone",
+        "Laptop",
+        "Tablet"
+    ]
+)
 
 device_hours_text = st.select_slider(
     "How much time do you spend on digital devices each day?",
@@ -367,36 +428,66 @@ if st.button("Analyze"):
     # One-hot columns
     # ---------------------
 
-    user_df["gender_Female"] = 0
-    user_df["gender_Male"] = 1
+    user_df["gender_Female"] = (
+        1 if gender == "Female" else 0
+    )
 
-    user_df["region_Africa"] = 0
-    user_df["region_Asia"] = 0
-    user_df["region_Europe"] = 1
-    user_df["region_Middle East"] = 0
-    user_df["region_North America"] = 0
-    user_df["region_South America"] = 0
+    user_df["gender_Male"] = (
+        1 if gender == "Male" else 0
+    )
 
-    user_df["income_level_High"] = 0
-    user_df["income_level_Low"] = 0
-    user_df["income_level_Lower-Mid"] = 0
-    user_df["income_level_Upper-Mid"] = 1
+    for col in [
+        "region_Africa",
+        "region_Asia",
+        "region_Europe",
+        "region_Middle East",
+        "region_North America",
+        "region_South America"
+    ]:
+        user_df[col] = 0
 
-    user_df["education_level_Bachelor"] = 0
-    user_df["education_level_High School"] = 0
-    user_df["education_level_Master"] = 1
-    user_df["education_level_PhD"] = 0
+    user_df[f"region_{region}"] = 1
 
-    user_df["daily_role_Caregiver/Home"] = 0
-    user_df["daily_role_Full-time Employee"] = 1
-    user_df["daily_role_Part-time/Shift"] = 0
-    user_df["daily_role_Student"] = 0
-    user_df["daily_role_Unemployed_Looking"] = 0
+    for col in [
+        "income_level_Low",
+        "income_level_Lower-Mid",
+        "income_level_Upper-Mid",
+        "income_level_High"
+    ]:
+        user_df[col] = 0
 
-    user_df["device_type_Android"] = 0
-    user_df["device_type_Laptop"] = 0
-    user_df["device_type_Tablet"] = 0
-    user_df["device_type_iPhone"] = 1
+    user_df[f"income_level_{income_level}"] = 1
+
+    for col in [
+        "education_level_High School",
+        "education_level_Bachelor",
+        "education_level_Master",
+        "education_level_PhD"
+    ]:
+        user_df[col] = 0
+
+    user_df[f"education_level_{education_level}"] = 1
+
+    for col in [
+        "daily_role_Student",
+        "daily_role_Full-time Employee",
+        "daily_role_Part-time/Shift",
+        "daily_role_Caregiver/Home",
+        "daily_role_Unemployed_Looking"
+    ]:
+        user_df[col] = 0
+
+    user_df[f"daily_role_{daily_role}"] = 1
+
+    for col in [
+        "device_type_Android",
+        "device_type_iPhone",
+        "device_type_Laptop",
+        "device_type_Tablet"
+    ]:
+        user_df[col] = 0
+
+    user_df[f"device_type_{device_type}"] = 1
 
     # ---------------------
     # Match training columns
@@ -423,7 +514,7 @@ if st.button("Analyze"):
     # ---------------------
     # Regression Prediction
     # ---------------------
-    st.write(user_df.shape)
+    #st.write(user_df.shape)
 
     user_scaled = scaler.transform(
         user_df
