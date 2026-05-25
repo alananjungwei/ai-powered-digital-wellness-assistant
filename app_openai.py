@@ -13,9 +13,7 @@ scaler = joblib.load(MODELS_DIR / "digital_dependence_scaler.pkl")
 model_columns = joblib.load(MODELS_DIR / "model_columns.pkl")
 
 
-st.title(
-    "🌿 AI Digital Wellness Assistant"
-)
+st.title("🌿 AI Digital Wellness Assistant")
 
 st.markdown(
 """
@@ -45,18 +43,14 @@ with st.sidebar:
 
 st.header("👤 About You")
 
-user_name = st.text_input(
-    "What should I call you?"
-)
+user_name = st.text_input("What should I call you?")
 
 if user_name:
     st.success(
         f"Hello {user_name}! 👋"
     )
 
-st.caption(
-    "Answer a few questions below to receive your personalized digital wellness assessment."
-)
+st.caption("Answer a few questions below to receive your personalized digital wellness assessment.")
 
 gender = st.selectbox(
     "Gender",
@@ -541,9 +535,10 @@ if st.button("Analyze"):
     # ---------------------
     # AI Wellness Summary
     # ---------------------
-
     ai_feedback = None
-
+    ai_explanation = None
+    wellness_plan = None
+        
     if openai_api_key:
 
         try:
@@ -631,6 +626,157 @@ if st.button("Analyze"):
                 .content
             )
 
+            # ---------------------
+            # AI Explanation
+            # ---------------------
+
+            ai_explanation = None
+
+            risk_drivers = []
+
+            if stress_level >= 8:
+                risk_drivers.append("High stress levels")
+
+            if anxiety_score >= 18:
+                risk_drivers.append("Elevated anxiety")
+
+            if device_hours_per_day >= 12:
+                risk_drivers.append("Heavy device usage")
+
+            if phone_unlocks >= 250:
+                risk_drivers.append("Frequent phone checking")
+
+
+            protective_factors = []
+
+            if sleep_hours >= 7:
+                protective_factors.append("Healthy sleep duration")
+
+            if physical_activity_days >= 4:
+                protective_factors.append("Regular physical activity")
+
+            if happiness_score >= 8:
+                protective_factors.append("Positive wellbeing")
+
+            if focus_score >= 75:
+                protective_factors.append("Strong focus habits")
+
+
+            explanation_prompt = f"""
+            Risk Probability:
+            {probability:.1%}
+
+            Main Risk Drivers:
+            {', '.join(risk_drivers)}
+
+            Protective Factors:
+            {', '.join(protective_factors)}
+
+            Explain these findings to the user in
+            plain English.
+
+            Do not use technical machine learning terms.
+
+            Maximum 120 words.
+            """
+
+            response = client.chat.completions.create(
+                model="gpt-4.1-mini",
+                max_tokens=150,
+                messages=[
+                    {
+                        "role":"system",
+                        "content":
+                        "You explain wellness predictions in friendly language."
+                    },
+                    {
+                        "role":"user",
+                        "content": explanation_prompt
+                    }
+                ]
+            )
+
+            ai_explanation = (
+                response
+                .choices[0]
+                .message
+                .content
+            )
+
+            plan_prompt = f"""
+            Create a personalized 7-day wellness plan.
+
+            User:
+            {user_name}
+
+            High Risk Probability:
+            {probability:.1%}
+
+            Digital Dependence Score:
+            {dependence_score:.1f}
+
+            Sleep Hours:
+            {sleep_hours}
+
+            Physical Activity Days:
+            {physical_activity_days}
+
+            Stress Level:
+            {stress_level}
+
+            Anxiety Score:
+            {anxiety_score}
+
+            Happiness Score:
+            {happiness_score}
+
+            Focus Score:
+            {focus_score}
+
+            Requirements:
+
+            - Create a 7-day plan
+            - Include sleep habits
+            - Include digital wellbeing habits
+            - Include stress management
+            - Include physical activity
+            - Keep actions realistic
+            - Use bullet points
+
+            Maximum 250 words.
+            """
+
+            response = client.chat.completions.create(
+                model="gpt-4.1-mini",
+                max_tokens=300,
+                messages=[
+                    {
+                        "role":"system",
+                        "content":
+                        """
+                        You are a digital wellness coach.
+
+                        Create realistic wellness plans.
+
+                        Never diagnose.
+
+                        Focus on practical habits.
+                        """
+                    },
+                    {
+                        "role":"user",
+                        "content": plan_prompt
+                    }
+                ]
+            )
+
+            wellness_plan = (
+                response
+                .choices[0]
+                .message
+                .content
+            )
+
         except Exception as e:
 
             st.error(
@@ -692,10 +838,15 @@ if st.button("Analyze"):
 
     if ai_feedback:
 
-        st.subheader(
-            "🤖 AI Wellness Coach"
-        )
+        st.subheader("🤖 AI Wellness Coach")
+        st.write(ai_feedback)
 
-        st.write(
-            ai_feedback
-        )
+    if ai_explanation:
+
+        st.subheader("🔍 Why Did I Receive This Result?")
+        st.write(ai_explanation)
+
+    if wellness_plan:
+
+        st.subheader("📅 Your Personalized 7-Day Wellness Plan")
+        st.write(wellness_plan)
