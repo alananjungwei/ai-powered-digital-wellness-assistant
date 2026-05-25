@@ -1,6 +1,6 @@
 import streamlit as st
 import joblib
-import pathlib
+from pathlib import Path
 import pandas as pd
 from openai import OpenAI
 
