@@ -3,6 +3,8 @@ import joblib
 from pathlib import Path
 import pandas as pd
 from openai import OpenAI
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Load models
 BASE_DIR = Path(__file__).parent
@@ -40,8 +42,9 @@ with st.sidebar:
 #st.success("Models loaded successfully!")
 
 # Level 1
-
 st.header("👤 About You")
+st.caption("Step 1/4")
+st.caption("Step 1 of 4: About You")
 
 user_name = st.text_input("What should I call you?")
 
@@ -112,6 +115,8 @@ daily_role = st.selectbox(
 )
 
 st.header("📱 Digital Habits")
+st.caption("Step 2/4")
+st.caption("Step 2 of 4: Digital Habits")
 
 device_type = st.selectbox(
     "Primary Device",
@@ -172,6 +177,8 @@ phone_unlocks = phone_unlocks_map[
 ]
 
 st.header("🌙 Sleep & Lifestyle")
+st.caption("Step 3/4")
+st.caption("Step 3 of 4: Sleep & Lifestyle")
 
 physical_activity_days = st.slider(
     "Physical Activity Days Per Week",
@@ -211,6 +218,8 @@ sleep_quality_map = {
 sleep_quality = sleep_quality_map[sleep_quality_text]
 
 st.header("🧠 Mental Wellbeing")
+st.caption("Step 4/4")
+st.caption("Step 4 of 4: Mental Wellbeing")
 
 anxiety_text = st.select_slider(
     "How anxious have you felt recently?",
@@ -533,6 +542,90 @@ if st.button("Analyze"):
     )[0]
 
     # ---------------------
+    # Wellness Radar Chart
+    # ---------------------
+
+    sleep_score = sleep_quality * 20
+
+    activity_score = (
+        physical_activity_days / 7
+    ) * 100
+
+    stress_score = (
+        (10 - stress_level) / 10
+    ) * 100
+
+    focus_chart = focus_score
+
+    happiness_chart = happiness_score * 10
+
+    digital_balance_score = max(
+        0,
+        100 - (device_hours_per_day * 5)
+    )
+
+    categories = [
+        "Sleep",
+        "Activity",
+        "Low Stress",
+        "Focus",
+        "Happiness",
+        "Digital Balance"
+    ]
+
+    values = [
+        sleep_score,
+        activity_score,
+        stress_score,
+        focus_chart,
+        happiness_chart,
+        digital_balance_score
+    ]
+
+    values += values[:1]
+
+    angles = np.linspace(
+        0,
+        2 * np.pi,
+        len(categories),
+        endpoint=False
+    ).tolist()
+
+    angles += angles[:1]
+
+    fig = plt.figure(figsize=(6,6))
+
+    ax = plt.subplot(
+        111,
+        polar=True
+    )
+
+    ax.plot(
+        angles,
+        values,
+        linewidth=2
+    )
+
+    ax.fill(
+        angles,
+        values,
+        alpha=0.25
+    )
+
+    ax.set_xticks(
+        angles[:-1]
+    )
+
+    ax.set_xticklabels(
+        categories
+    )
+
+    ax.set_ylim(
+        0,
+        100
+    )
+
+    # ---------------------
     # AI Wellness Summary
     # ---------------------
     ai_feedback = None
@@ -808,7 +901,8 @@ if st.button("Analyze"):
     # ---------------------
     # Display
     # ---------------------
-
+    
+    
     st.subheader("📊 Results")
 
     if prediction == 1:
@@ -848,14 +942,79 @@ if st.button("Analyze"):
             """
         )    
 
-    st.write(
-        f"Risk Probability: {probability:.1%}"
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric(
+            "Risk Probability",
+            f"{probability:.1%}"
+        )
+
+    with col2:
+        st.metric(
+            "Digital Dependence Score",
+            f"{dependence_score:.1f}"
+        )
+
+
+    st.subheader(
+    "📈 Wellness Profile"
     )
 
-    st.metric(
-        "Digital Dependence Score",
-        f"{dependence_score:.1f}"
-    )
+    strengths = []
+
+    if sleep_hours >= 7:
+        strengths.append("😴 Healthy sleep duration")
+
+    if physical_activity_days >= 4:
+        strengths.append("🏃 Regular physical activity")
+
+    if happiness_score >= 8:
+        strengths.append("😊 Positive wellbeing")
+
+    if focus_score >= 75:
+        strengths.append("🎯 Strong focus habits")  
+
+    opportunities = []
+
+    if device_hours_per_day >= 12:
+        opportunities.append("📱 High daily screen time")
+
+    if phone_unlocks >= 250:
+        opportunities.append("🔔 Frequent phone checking")
+
+    if stress_level >= 8:
+        opportunities.append("⚠ Elevated stress levels")
+
+    if anxiety_score >= 18:
+        opportunities.append("🧠 Higher anxiety levels")
+
+    st.pyplot(fig)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.subheader("💪 Your Strengths")
+
+        if strengths:
+            for item in strengths:
+                st.write(item)
+
+        else:
+            st.write("No major strengths identified yet.")
+
+    with col2:
+
+        st.subheader("🌱 Opportunities")
+
+        if opportunities:
+            for item in opportunities:
+                st.write(item)
+
+        else:
+            st.write("No major concerns identified.")
+    
 
     if ai_feedback:
 
@@ -864,8 +1023,17 @@ if st.button("Analyze"):
 
     if ai_explanation:
 
-        st.subheader("🔍 Why Did I Receive This Result?")
-        st.write(ai_explanation)
+        preview = (
+            ai_explanation[:180]
+            + "..."
+        )
+
+        st.info(preview)
+
+        with st.expander(
+            "🔍 Read Full Explanation"
+        ):
+            st.markdown(ai_explanation)
 
     if wellness_plan:
 
@@ -875,3 +1043,107 @@ if st.button("Analyze"):
             expanded=True
         ):
             st.markdown(wellness_plan)
+    
+    # SHAP Insights 
+
+    st.subheader(
+    "🔍 What Influenced Your Assessment?"
+    )
+
+    st.write(
+        f"""
+    📱 Device Usage:
+    {device_hours_per_day} hours/day
+
+    😴 Sleep Duration:
+    {sleep_hours} hours/night
+
+    ⚠ Stress Level:
+    {stress_level}/10
+
+    🔓 Phone Unlocks:
+    {phone_unlocks}/day
+
+    🏃 Physical Activity:
+    {physical_activity_days} days/week
+    """
+    )
+
+    if stress_level >= 8:
+        st.warning(
+            "Stress appears to be one of the strongest contributors to your wellness risk."
+        )
+
+    if sleep_hours < 6:
+        st.warning(
+            "Your sleep duration may be affecting your overall wellbeing."
+        )
+
+    if device_hours_per_day >= 12:
+        st.warning(
+            "High daily device usage may be contributing to digital dependence."
+        )
+
+    st.caption(
+        """
+    These indicators were among the most influential
+    factors identified through SHAP analysis of the
+    machine learning models.
+    """
+    )
+
+    st.caption(
+        "These insights were identified through SHAP model interpretation."
+    )
+
+    # Download Report
+    report_text = f"""
+    DIGITAL WELLNESS REPORT
+
+    Name:
+    {user_name}
+
+    Risk Probability:
+    {probability:.1%}
+
+    Digital Dependence Score:
+    {dependence_score:.1f}
+
+    --------------------------------
+
+    STRENGTHS
+
+    {chr(10).join(strengths)}
+
+    --------------------------------
+
+    OPPORTUNITIES
+
+    {chr(10).join(opportunities)}
+
+    --------------------------------
+
+    AI WELLNESS COACH
+
+    {ai_feedback if ai_feedback else "Not generated"}
+
+    --------------------------------
+
+    AI EXPLANATION
+
+    {ai_explanation if ai_explanation else "Not generated"}
+
+    --------------------------------
+
+    7-DAY WELLNESS PLAN
+
+    {wellness_plan if wellness_plan else "Not generated"}
+    """
+
+    st.subheader("📥 Export Results")
+    st.download_button(
+        label="📄 Download Wellness Report",
+        data=report_text,
+        file_name="digital_wellness_report.txt",
+        mime="text/plain"
+    )

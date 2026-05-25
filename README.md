@@ -1,18 +1,112 @@
 # 🌿AI-Powered Digital Wellness Assistant
-An end-to-end Machine Leaning, LLM, and Generative AI application that assesses digital wellnes habits, predicts wellness risk levels, estimates digital dependence, and provides personalized recommendations through an interactive Streamlit user interface.
+The AI-Powered Digital Wellness Assistant is an end-to-end Machine Learning and Generative AI application that helps users better understand their digital habits, wellbeing patterns, and potential wellness risks.
 
-# 📌Project Overview
+The application combines:
 
-The increasing use to digital devices and impact sleep, mental well-being, productivity, and overall lifestyle balance. 
+- Machine Learning (Classification & Regression)
+- SHAP Explainability
+- Large Language Models (OpenAI)
+- Personalized Wellness Recommendations
+- Interactive Streamlit Dashboard
 
-This project aims to help users better understand their digital habits and effects by
+to transform behavioural and wellbeing indicators into actionable wellness insights.
 
-* Predicting wellness risk levels
-* Estimating digital dependence
-* Providing personalized recommendations
-* Generating AI-powered wellness feedback (optional OpenAI version)
+## Aplication Preview 
 
-The application combines traditional Machine Learning, Explainable AI (SHAP), Feature Engineering, and Strealimt deployment into a user-friendly wellness assessment tool. 
+### User Assessment 
+
+* Enter OpenAI API Key
+
+![OpenAI_API_Key](images/openai_apikey.png)
+
+* Answer questions
+
+<img src="images/question_1.png" width="500">
+<img src="images/question_2.png" width="500">
+<img src="images/question_3.png" width="500">
+
+### Wellness Dashboard
+
+<img src="images/result_1.png" width="300">
+
+### AI Wellness Coach 
+
+<img src="images/result_2.png" width="400">
+
+### Personalized Wellness Plan 
+
+<img src="images/result_3.png" width="400">
+<img src="images/result_4.png" width="400">
+
+
+## Key Features
+
+### 📊 Machine Learning Predictions
+
+The application predicts:
+
+- **Wellness Risk Level** (Classification)
+- **Digital Dependence Score** (Regression)
+
+using demographic, behavioural, lifestyle, and wellbeing indicators.
+
+### 🔍 Explainable AI
+
+Model decisions are interpreted using **SHAP (SHapley Additive Explanations)**.
+
+Users receive transparent insights into the factors that most strongly influence their assessment.
+
+### 🤖 LLM-Powered Explanation Layer
+
+OpenAI models are used to:
+
+- Explain predictions in plain language
+- Translate technical insights into user-friendly feedback
+- Highlight strengths and opportunities
+- Provide practical wellness recommendations
+
+### 📅 Generative AI Wellness Planning
+
+The application generates:
+
+- Personalized wellness summaries
+- Behaviour improvement suggestions
+- Customized 7-day wellness plans
+
+tailored to each user's profile.
+
+### 📈 Interactive Dashboard
+
+Includes:
+
+- Wellness metrics
+- Radar chart visualization
+- Strengths & opportunities analysis
+- AI coaching feedback
+- Downloadable wellness reports
+
+---
+
+## Application Workflow
+
+```text
+User Inputs
+      ↓
+Feature Engineering
+      ↓
+Machine Learning Models
+(AdaBoost + Linear Regression)
+      ↓
+SHAP Explainability
+      ↓
+LLM Explanation Layer
+      ↓
+Generative AI Wellness Coach
+      ↓
+Personalized Wellness Dashboard
+```
+
+---
 
 # 🎯Objectives
 The project focuses on three target variables from the dataset:
@@ -151,20 +245,38 @@ depending on the model.
 |F1-Score|R² Score|
 |ROC-AUS||
 
+# Model Explainability (SHAP)
 
-# Explainable AI (SHAP)
+To improve transparency, SHAP (SHapley Additive Explanations) was used to identify which features had the greatest influence on each prediction task.
 
-Model interpretability was implemented using SHAP to identify:
-* Most influential risk factors
-* Positive and negative contributions
-* Feature impact on individual predictions
+## Digital Dependence Score Prediction
 
-#### Examples of important features included:
+The SHAP analysis revealed that digital behavior variables were the strongest drivers of the predicted dependence score.
+
+Key factors included:
+* Device Hours Per Day
+* Phone Unlock Frequency
+* Notifications Per Day
+* Age
+* Activity-Sleep Balance
+
+These findings suggest that the intensity and frequency of device interaction play a major role in determining digital dependence levels.
+
+<p align="center"> <img src="images/shap_digital_dependence.png" width="500"> </p>
+
+## Wellness Risk Prediction 
+For wellness risk classification, lifestyle and wellbeing indicators were more influential than simple usage metrics.
+
+The most important factors included:
 * Stress Level
-* Device Usage 
+* Device Hours Per Day
 * Sleep Hours
-* Focus Score
-* Physical Activity
+* Mental Burden
+* Screen-to-Sleep Ratio
+
+The results indicate that elevated stress and insufficient sleep contribute more strongly to wellness risk than digital behavior alone.
+ <p align="center"> <img src="images/shap_high_risk.png" width="500"> </p>
+
 
 # Large Language Model (LLM) Explanation Layer
 
@@ -215,47 +327,78 @@ The assistant generates a customized action plan including:
 
 # Streamlit User Interface
 
-This project includes two deployed user interafaces:
+Features include:
 
-## Version 1: Machine Learning Wellness Assistant
-Features:
-* User-friendly wellness questionnaire
-* Risk prediction
-* Digital dependence estimation
-* Personalized rule-based recommendations
+- Interactive assessment form
+- Human-friendly wellness inputs
+- Radar chart visualization
+- Strengths and opportunities analysis
+- AI wellness coaching
+- Personalized action plans
+- Downloadable wellness reports
 
-## Version 2: AI-Powered Wellness Assistant
-Additional features:
-* OpenAI integration
-* AI-generated wellness feedback
-* Personalized coaching-style explanations
-* Natural langauge wellness recommendations
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/ai-powered-digital-wellness-assistant.git
+cd ai-powered-digital-wellness-assistant
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Launch the application:
+
+```bash
+streamlit run app_openai.py
+```
+
+---
+
+## OpenAI Setup
+
+To enable AI-powered explanations and wellness plans:
+
+1. Generate an OpenAI API key
+2. Launch the application
+3. Paste the API key into the sidebar
+
+Without an API key:
+
+- Machine learning predictions remain available
+- AI explanations and wellness plans will not be generated
+
 
 # Technologies Used 
-### Data Science
-* Python
-* Pandas
-* NumPy
+
+### Data Science & Machine Learning
+
+- Python
+- Pandas
+- NumPy
+- Scikit-Learn
+
+### Explainable AI
+
+- SHAP
 
 ### Visualization
-* Matplotlib
-* Seaborn
 
-### Machine Learning
-* Scikit-Learn
-* XGBoost
+- Matplotlib
 
-### Explainability 
-* SHAP
+### Application Development
 
-### Deployment
-* Streamlit
-* Joblib
-
-### LLM
+- Streamlit
 
 ### Generative AI
-* OpenAI API
+
+- OpenAI API
+
 
 # Project Structure
 
@@ -276,11 +419,9 @@ AI-Digital-Wellness-Assistant/
 │
 ├── app.py
 │
-├── app_openai.py
-│
 ├── requirements.txt
 │
 └── README.md
 ```
 
-# Examples 
+
