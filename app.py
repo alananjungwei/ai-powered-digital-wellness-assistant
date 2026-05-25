@@ -4,10 +4,13 @@ import pandas as pd
 from openai import OpenAI
 
 # Load models
-ada_model = joblib.load("high_risk_classifier.pkl")
-linreg = joblib.load("digital_dependence_regressor.pkl")
-scaler = joblib.load("digital_dependence_scaler.pkl")
-model_columns = joblib.load("model_columns.pkl")
+BASE_DIR = Path(__file__).parent
+MODELS_DIR = BASE_DIR / "models"
+ada_model = joblib.load(MODELS_DIR / "high_risk_classifier.pkl")
+linreg = joblib.load(MODELS_DIR / "digital_dependence_regressor.pkl")
+scaler = joblib.load(MODELS_DIR / "digital_dependence_scaler.pkl")
+model_columns = joblib.load(MODELS_DIR / "model_columns.pkl")
+
 
 st.title(
     "🌿 AI Digital Wellness Assistant"

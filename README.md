@@ -257,18 +257,16 @@ Additional features:
 AI-Digital-Wellness-Assistant/
 
 │
-├── data/
-│
 ├── notebooks/
-│   ├── EDA.ipynb
-│   ├── Classification.ipynb
-│   ├── Regression.ipynb
+│   ├── notebook_ml.ipynb
 │
 ├── models/
 │   ├── high_risk_classifier.pkl
 │   ├── digital_dependence_regressor.pkl
 │   ├── digital_dependence_scaler.pkl
 │   └── model_columns.pkl
+│
+├── images/
 │
 ├── app.py
 │
