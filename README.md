@@ -11,7 +11,7 @@ The application combines:
 
 to transform behavioural and wellbeing indicators into actionable wellness insights.
 
-## Aplication Preview 
+## Application Preview 
 
 ### User Assessment 
 
@@ -21,9 +21,11 @@ to transform behavioural and wellbeing indicators into actionable wellness insig
 
 * Answer questions
 
-<img src="images/question_1.png" width="500">
-<img src="images/question_2.png" width="500">
-<img src="images/question_3.png" width="500">
+<p align="center">
+  <img src="images/question_1.png" width="30%">
+  <img src="images/question_2.png" width="30%">
+  <img src="images/question_3.png" width="30%">
+</p>
 
 ### Wellness Dashboard
 
@@ -170,7 +172,7 @@ Applied:
 StandardScaler()
 ```
 for models sensitive to feature scale:
-* Logsitic Regression
+* Logistic Regression
 * KNN 
 * Linear Regression
 
@@ -211,13 +213,33 @@ Several engineered features were created to improve predictive performance:
 * AdaBoost Classifier
 * Gradient Boosting Classifier
 
-## Regerssion Models 
+## Regression Models 
 * Linear Regression
 * KNN Regressor
 * XGBoost Regressor
 * Random Forest Regressor
 * AdaBoost Regressor
 * Gradient Boosting Regressor
+
+# Model Performance
+
+## AdaBoost Classifier (For high_risk_flag)
+
+| Metric | Score |
+|----------|----------|
+| Accuracy | 0.883 |
+| Precision | 0.82 |
+| Recall | 0.54 |
+| F1 Score | 0.65 |
+| ROC-AUC | 0.782 |
+
+## Linear Regression (for digital_dependence_score)
+
+| Metric | Score |
+|----------|----------|
+| MAE | 0.708 |
+| RMSE | 1.70 |
+| R² | 0.986 |
 
 # Hyperparameter Tuning 
 Performed optimization using: 
@@ -243,7 +265,7 @@ depending on the model.
 |Precision| MSE (Mean Squared Error)|
 |Recall|RMSE (Root Mean Squared Error)|
 |F1-Score|R² Score|
-|ROC-AUS||
+|ROC-AUC||
 
 # Model Explainability (SHAP)
 
@@ -277,6 +299,16 @@ The most important factors included:
 The results indicate that elevated stress and insufficient sleep contribute more strongly to wellness risk than digital behavior alone.
  <p align="center"> <img src="images/shap_high_risk.png" width="500"> </p>
 
+
+The two predictive models capture different dimensions of digital wellbeing:
+
+| Digital Dependence Score | Wellness Risk Prediction |
+|--------------------------|--------------------------|
+| Focuses on device interaction patterns | Focuses on wellbeing and lifestyle indicators |
+| Driven by usage intensity and engagement | Driven by stress, sleep, and mental burden |
+| Measures behavioural dependence | Measures potential wellness impact |
+
+Together, the models provide a more comprehensive assessment of both digital behaviour and overall wellbeing.
 
 # Large Language Model (LLM) Explanation Layer
 
@@ -423,5 +455,24 @@ AI-Digital-Wellness-Assistant/
 │
 └── README.md
 ```
+# Challenges Learned
+
+Key lessons from this project included:
+
+- Feature engineering often improved performance more than changing algorithms.
+- Explainability was essential for translating model outputs into actionable insights.
+- Integrating Large Language Models significantly improved the user experience by converting technical predictions into understandable recommendations.
+- Product design and usability became increasingly important as the application evolved from a machine learning prototype into an interactive wellness tool.
 
 
+
+# Future Improvements
+
+Potential future enhancements include:
+
+- User-specific SHAP explanations
+- Historical wellness tracking
+- RAG-powered evidence-based wellness recommendations
+- Mobile-first deployment
+- Multi-language support
+- User account and progress monitoring
