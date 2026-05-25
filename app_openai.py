@@ -627,57 +627,59 @@ if st.button("Analyze"):
             )
 
             # ---------------------
-            # AI Explanation
+            # SHAP-Based Factors
             # ---------------------
 
-            ai_explanation = None
+            high_risk_shap_features = [
+                "Stress Level",
+                "Device Hours Per Day",
+                "Sleep Hours",
+                "Mental Burden",
+                "Screen-to-Sleep Ratio"
+            ]
 
-            risk_drivers = []
-
-            if stress_level >= 8:
-                risk_drivers.append("High stress levels")
-
-            if anxiety_score >= 18:
-                risk_drivers.append("Elevated anxiety")
-
-            if device_hours_per_day >= 12:
-                risk_drivers.append("Heavy device usage")
-
-            if phone_unlocks >= 250:
-                risk_drivers.append("Frequent phone checking")
-
-
-            protective_factors = []
-
-            if sleep_hours >= 7:
-                protective_factors.append("Healthy sleep duration")
-
-            if physical_activity_days >= 4:
-                protective_factors.append("Regular physical activity")
-
-            if happiness_score >= 8:
-                protective_factors.append("Positive wellbeing")
-
-            if focus_score >= 75:
-                protective_factors.append("Strong focus habits")
-
+            dependence_shap_features = [
+                "Device Hours Per Day",
+                "Phone Unlock Frequency",
+                "Notifications Per Day",
+                "Age",
+                "Activity-Sleep Balance"
+            ]
 
             explanation_prompt = f"""
+            User:
+            {user_name}
+
             Risk Probability:
             {probability:.1%}
 
-            Main Risk Drivers:
-            {', '.join(risk_drivers)}
+            Digital Dependence Score:
+            {dependence_score:.1f}
 
-            Protective Factors:
-            {', '.join(protective_factors)}
+            Key wellness indicators:
 
-            Explain these findings to the user in
-            plain English.
+            • Stress Level: {stress_level}/10
+            • Sleep Duration: {sleep_hours} hours/night
+            • Device Usage: {device_hours_per_day} hours/day
+            • Phone Unlocks: {phone_unlocks}/day
+            • Physical Activity Days: {physical_activity_days}/week
+            • Mental Burden Score: {user_df['mental_burden'].iloc[0]:.1f}
+            • Screen-to-Sleep Ratio: {user_df['screen_sleep_ratio'].iloc[0]:.2f}
+            • Activity-Sleep Balance: {user_df['activity_sleep'].iloc[0]:.1f}
 
-            Do not use technical machine learning terms.
+            These indicators were among the strongest factors
+            identified during model interpretation.
 
-            Maximum 120 words.
+            Provide:
+
+            1. A simple explanation
+            2. Positive observations
+            3. Areas that may deserve attention
+            4. Practical next steps
+
+            Friendly and supportive tone.
+
+            Maximum 150 words.
             """
 
             response = client.chat.completions.create(
@@ -736,14 +738,33 @@ if st.button("Analyze"):
             Requirements:
 
             - Create a 7-day plan
-            - Include sleep habits
-            - Include digital wellbeing habits
-            - Include stress management
-            - Include physical activity
-            - Keep actions realistic
-            - Use bullet points
+
+            Day 1:
+            - one action
+
+            Day 2:
+            - one action
+
+            Day 3:
+            - one action
+
+            Day 4:
+            - one action
+
+            Day 5:
+            - one action
+
+            Day 6:
+            - one action
+
+            Day 7:
+            - one action
+
+            Then provide:
+            - 3 additional tips
 
             Maximum 250 words.
+
             """
 
             response = client.chat.completions.create(
@@ -849,4 +870,8 @@ if st.button("Analyze"):
     if wellness_plan:
 
         st.subheader("📅 Your Personalized 7-Day Wellness Plan")
-        st.write(wellness_plan)
+        with st.expander(
+            "📅 Your Personalized 7-Day Wellness Plan",
+            expanded=True
+        ):
+            st.markdown(wellness_plan)

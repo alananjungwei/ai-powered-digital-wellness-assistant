@@ -94,55 +94,18 @@ train_test_split()
 
 # Feature Engineering 
 
-Several custom features were engineered to improve predictive performance. 
+Several engineered features were created to improve predictive performance:
 
-### Screen Sleep Ratio
+|Feature|Description|
+|-------|-----------|
+|screen_sleep_ratio|Device hours relative to sleep duration|
+|social_media_ratio|Social media usage proportion|
+|notifications_per_hour|Notification intensity
+|mental_burden|Combined anxiety, depression, and stress indicator|
+|wellbeing_index|Combined happiness, focus, and sleep quality|
+|digital_physical_balance|Digital activity versus physical activity|
+|activity_sleep|Interaction between activity and sleep|
 
-```py
-device_hours_per_day / sleep_hours
-```
-Measures balance between screen usage and sleep.
-
-### Social Media Ratio
-
-```py
-social_media_mins / total_device_time
-```
-Represents the proportion of device usage spent on social media.
-
-### Notifications Per Hour
-
-```py
-notifications_per_day / device_hours_per_day
-```
-Captures interruption intensity.
-
-### Mental Burden 
-
-```py
-(anxiety_score + depression_score + stress_score) / 3
-```
-Aggregated psychological burden score.
-
-### Well-being Index
-
-```py
-(happiness_score + focus_score + sleep_quality_score) / 3
-```
-Combined well-being measure.
-
-### Digital Physical Balance 
-
-```py
-device_hours_per_day / physical_activity_days
-```
-Balance between digital engagement and physical activity.
-
-### Activity Sleep Interaction
-```py
-physical_activity_days * sleep_hours
-```
-Captures interaction between exercise and sleep habits. 
 
 # Models Evaluated
 
@@ -179,19 +142,15 @@ Parameters tuned included:
 depending on the model.
 
 # Evaluation Metrics
-## Classification
-* Accuracy
-* Precision
-* Recall
-* F1-Score
-* ROC-AUC
-* Confusion Matric
 
-## Regression
-* MAE (Mean Absolute Error)
-* MSE (Mean Squared Error)
-* RMSE (Root Mean Squared Error)
-* R² Score
+|Classification|Regression|
+|--------------|----------|
+|Accuracy|MAE (Mean Absolute Error)|
+|Precision| MSE (Mean Squared Error)|
+|Recall|RMSE (Root Mean Squared Error)|
+|F1-Score|R² Score|
+|ROC-AUS||
+
 
 # Explainable AI (SHAP)
 
@@ -206,6 +165,53 @@ Model interpretability was implemented using SHAP to identify:
 * Sleep Hours
 * Focus Score
 * Physical Activity
+
+# Large Language Model (LLM) Explanation Layer
+
+Machine learning predictions can be difficult for non-technical users to understand. To improve transparency and usability, OpenAI language models are used to translate model outputs into human-readable explanations. 
+### Inputs
+The LLM receives: 
+* High Risk Probability
+* Digital Dependence Score
+* Key well-being indicators
+* SHAP-identified important features
+* User-specific feature values
+### Outputs
+The LLM generates:
+* Plain-language interpretation of results
+* Identification of positive habits
+* Areas that may deserve attention
+* Personalized recommendations
+
+# Generative AI Wellness Coach 
+Beyond explaining predictions, the application uses Generative AI to provide personalized wellness guidance tailored to each user's digital habits and well-being profile.
+
+### Inputs
+The model considers:
+* Risk probability
+* Digital dependence score 
+* Sleep duration and quality
+* Physical activity levels
+* Stress and anxiety indicators
+* Happiness and focus scores
+### Outputs
+The Generative AI Wellness Coach produces:
+
+### Wellness Summary
+* Friendly and supportive feedback
+* Positive observations
+* Areas for improvement
+* Practical suggestions
+
+### Personalized 7-Day Wellness Plan
+
+The assistant generates a customized action plan including:
+
+* Daily wellbeing activities
+* Sleep improvement strategies
+* Digital wellbeing recommendations
+* Stress management techniques
+* Physical activity goals
 
 # Streamlit User Interface
 
