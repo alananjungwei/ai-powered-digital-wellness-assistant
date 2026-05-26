@@ -13,32 +13,58 @@ to transform behavioural and wellbeing indicators into actionable wellness insig
 
 ## Application Preview 
 
-### User Assessment 
+### Step 1: Complete the Wellness Assessment 
 
-* Enter OpenAI API Key
-
-![OpenAI_API_Key](images/openai_apikey.png)
-
-* Answer questions
+Users provide demographic information, digital habits, sleep and lifestyle behaviours, and mental wellbeing indicators through an interactive assessment form.
 
 <p align="center">
-  <img src="images/question_1.png" width="30%">
-  <img src="images/question_2.png" width="30%">
-  <img src="images/question_3.png" width="30%">
+  <img src="images/question1.png" width="35%">
+  <img src="images/question2.png" width="45%">
 </p>
 
-### Wellness Dashboard
+<p align="center">
+  <img src="images/question3.png" width="45%">
+  <img src="images/question4.png" width="35%">
+</p>
 
-<img src="images/result_1.png" width="300">
+### Step 2: Define a Personal Goal 
 
-### AI Wellness Coach 
+Users can specify a personal improvement goal (e.g., sleep quality, stress reduction, focus, or exercise). The AI incorporates this goal into explanations and personalized recommendations.
 
-<img src="images/result_2.png" width="400">
+<p align="center">
+  <img src="images/question5.png" width="70%">
+</p>
 
-### Personalized Wellness Plan 
+### Personalized Results Dashboard 
 
-<img src="images/result_3.png" width="400">
-<img src="images/result_4.png" width="400">
+The dashboard presents predicted wellness risk and digital dependence levels using intuitive visual indicators.
+
+<p align="center">
+  <img src="images/result1.png" width="70%">
+</p>
+
+### Wellness Profile Visualization 
+
+A radar chart summarizes key wellness dimensions including sleep, activity, stress management, focus, and happiness.
+
+<p align="center">
+  <img src="images/result2.png" width="65%">
+</p>
+
+### Explainable AI & Personalized Coaching
+
+Model explanations are informed by SHAP feature importance analysis and translated into user-friendly insights through OpenAI-powered explanations.
+
+<p align="center">
+  <img src="images/result3.png" width="48%">
+  <img src="images/result5.png" width="48%">
+</p>
+
+### Generative AI Wellness Planning
+The system generates a personalized 7-day wellness improvement plan that incorporates the user's behavioural patterns and stated improvement goals.
+<p align="center">
+  <img src="images/result4.png" width="80%">
+</p>
 
 
 ## Key Features

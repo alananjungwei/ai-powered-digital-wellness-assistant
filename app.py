@@ -335,13 +335,33 @@ focus_map = {
 
 focus_score = focus_map[focus_text]
 
-# Button 
+# Personal goal 
+st.header("🎯 Personal Goal")
 
+user_goal = st.text_area(
+    "What would you most like to improve?",
+    placeholder=
+    """
+Examples:
+
+• I want to sleep better
+
+• I want to spend less time on my phone
+
+• I want to worry less
+
+• I want to be more productive
+
+• I want to exercise more
+
+• I want to improve my focus
+"""
+)
+
+# Button 
 if st.button("Analyze"):
 
-    # ---------------------
-    # Base features
-    # ---------------------
+    # base features
 
     user_df = pd.DataFrame({
 
@@ -655,6 +675,11 @@ if st.button("Analyze"):
             Focus Score:
             {focus_score}
 
+            Personal Goal:
+            {user_goal}
+
+            Prioritize the user's goal when giving advice.
+
             Format the response EXACTLY like this:
 
             Strengths:
@@ -724,6 +749,9 @@ if st.button("Analyze"):
             User:
             {user_name}
 
+            Personal Goal:
+            {user_goal}
+
             Risk Probability:
             {probability:.1%}
 
@@ -760,6 +788,9 @@ if st.button("Analyze"):
             Next Step:
             - one practical action
 
+            Consider the user's personal goal when explaining
+            the results and recommendations.
+
             Maximum 120 words.
             Use bullet points where appropriate.
             """
@@ -789,6 +820,13 @@ if st.button("Analyze"):
 
             plan_prompt = f"""
             Create a personalized 7-day wellness plan.
+
+
+            Personal Goal:
+            {user_goal}
+
+            The plan should prioritize helping the user
+            achieve this goal whenever appropriate.
 
             User:
             {user_name}
@@ -820,6 +858,14 @@ if st.button("Analyze"):
             Requirements:
 
             - Create a 7-day plan
+
+            Before Day 1, include:
+
+            Goal Focus:
+            (one sentence explaining how this plan supports
+            the user's stated goal)
+
+            Then create the 7-day plan.
 
             Day 1:
             - one action
@@ -1092,6 +1138,9 @@ if st.button("Analyze"):
 
     Name:
     {user_name}
+
+    Personal Goal:
+    {user_goal}
 
     Risk Probability:
     {probability:.1%}
