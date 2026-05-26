@@ -43,7 +43,6 @@ with st.sidebar:
 
 # Level 1
 st.header("👤 About You")
-st.caption("Step 1/4")
 st.caption("Step 1 of 4: About You")
 
 user_name = st.text_input("What should I call you?")
@@ -115,7 +114,6 @@ daily_role = st.selectbox(
 )
 
 st.header("📱 Digital Habits")
-st.caption("Step 2/4")
 st.caption("Step 2 of 4: Digital Habits")
 
 device_type = st.selectbox(
@@ -177,7 +175,6 @@ phone_unlocks = phone_unlocks_map[
 ]
 
 st.header("🌙 Sleep & Lifestyle")
-st.caption("Step 3/4")
 st.caption("Step 3 of 4: Sleep & Lifestyle")
 
 physical_activity_days = st.slider(
@@ -218,7 +215,6 @@ sleep_quality_map = {
 sleep_quality = sleep_quality_map[sleep_quality_text]
 
 st.header("🧠 Mental Wellbeing")
-st.caption("Step 4/4")
 st.caption("Step 4 of 4: Mental Wellbeing")
 
 anxiety_text = st.select_slider(
@@ -382,9 +378,7 @@ if st.button("Analyze"):
 
     })
 
-    # ---------------------
     # Engineered features
-    # ---------------------
 
     user_df["screen_sleep_ratio"] = (
         user_df["device_hours_per_day"]
@@ -441,9 +435,7 @@ if st.button("Analyze"):
         user_df["sleep_hours"]
     )
 
-    # ---------------------
     # One-hot columns
-    # ---------------------
 
     user_df["gender_Female"] = (
         1 if gender == "Female" else 0
@@ -506,18 +498,14 @@ if st.button("Analyze"):
 
     user_df[f"device_type_{device_type}"] = 1
 
-    # ---------------------
-    # Match training columns
-    # ---------------------
+    # match training columns 
 
     user_df = user_df.reindex(
         columns=model_columns,
         fill_value=0
     )
 
-    # ---------------------
-    # Classification Prediction
-    # ---------------------
+    # classification prediction 
 
     prediction = ada_model.predict(
         user_df
@@ -528,9 +516,7 @@ if st.button("Analyze"):
     )[0,1]
 
 
-    # ---------------------
-    # Regression Prediction
-    # ---------------------
+    # regression prediction
     #st.write(user_df.shape)
 
     user_scaled = scaler.transform(
@@ -541,9 +527,7 @@ if st.button("Analyze"):
         user_scaled
     )[0]
 
-    # ---------------------
-    # Wellness Radar Chart
-    # ---------------------
+    # wellness radar chart 
 
     sleep_score = sleep_quality * 20
 
@@ -558,19 +542,14 @@ if st.button("Analyze"):
     focus_chart = focus_score
 
     happiness_chart = happiness_score * 10
-
-    digital_balance_score = max(
-        0,
-        100 - (device_hours_per_day * 5)
-    )
+        
 
     categories = [
         "Sleep",
         "Activity",
         "Low Stress",
         "Focus",
-        "Happiness",
-        "Digital Balance"
+        "Happiness"
     ]
 
     values = [
@@ -578,8 +557,7 @@ if st.button("Analyze"):
         activity_score,
         stress_score,
         focus_chart,
-        happiness_chart,
-        digital_balance_score
+        happiness_chart
     ]
 
     values += values[:1]
@@ -625,9 +603,7 @@ if st.button("Analyze"):
         100
     )
 
-    # ---------------------
-    # AI Wellness Summary
-    # ---------------------
+    # AI wellness summary
     ai_feedback = None
     ai_explanation = None
     wellness_plan = None
@@ -679,14 +655,21 @@ if st.button("Analyze"):
             Focus Score:
             {focus_score}
 
-            Give:
+            Format the response EXACTLY like this:
 
-            1. A friendly explanation
-            2. Positive observations
-            3. Areas for improvement
-            4. Practical wellness suggestions
+            Strengths:
+            - bullet point
+            - bullet point
 
-            Keep it under 150 words.
+            Areas to Improve:
+            - bullet point
+            - bullet point
+
+            Recommendation:
+            - short practical recommendation
+
+            Maximum 120 words.
+            Use short bullet points.
             """
 
             response = client.chat.completions.create(
@@ -719,9 +702,7 @@ if st.button("Analyze"):
                 .content
             )
 
-            # ---------------------
-            # SHAP-Based Factors
-            # ---------------------
+            # SHAP based factors 
 
             high_risk_shap_features = [
                 "Stress Level",
@@ -763,21 +744,29 @@ if st.button("Analyze"):
             These indicators were among the strongest factors
             identified during model interpretation.
 
-            Provide:
+            Format exactly as:
 
-            1. A simple explanation
-            2. Positive observations
-            3. Areas that may deserve attention
-            4. Practical next steps
+            Summary:
+            - one short paragraph
 
-            Friendly and supportive tone.
+            Positive Habits:
+            - bullet point
+            - bullet point
 
-            Maximum 150 words.
+            Areas for Attention:
+            - bullet point
+            - bullet point
+
+            Next Step:
+            - one practical action
+
+            Maximum 120 words.
+            Use bullet points where appropriate.
             """
 
             response = client.chat.completions.create(
                 model="gpt-4.1-mini",
-                max_tokens=150,
+                max_tokens= 350,
                 messages=[
                     {
                         "role":"system",
@@ -898,25 +887,9 @@ if st.button("Analyze"):
             )
 
 
-    # ---------------------
     # Display
-    # ---------------------
-    
-    
+
     st.subheader("📊 Results")
-
-    if prediction == 1:
-
-        st.error(
-            f"⚠️ High Risk Detected ({probability:.1%})"
-        )
-
-    else:
-
-        st.success(
-            f"✅ Low Risk ({1-probability:.1%})"
-        )
-
 
     if prediction == 1:
 
@@ -942,20 +915,43 @@ if st.button("Analyze"):
             """
         )    
 
+    # Wellness Dashboard
+
+    st.subheader("📊 Wellness Dashboard")
+
     col1, col2 = st.columns(2)
 
     with col1:
-        st.metric(
-            "Risk Probability",
-            f"{probability:.1%}"
+
+        st.markdown("### 🛡️ Wellness Risk")
+
+        st.progress(float(probability))
+
+        st.write(
+            f"Risk Probability: {probability:.1%}"
         )
+
+        if probability < 0.20:
+            st.success("🟢 Low Risk")
+        elif probability < 0.50:
+            st.warning("🟡 Moderate Risk")
+        else:
+            st.error("🔴 High Risk")
+
+    dependence_normalized = min(max(dependence_score / 100, 0), 1)
 
     with col2:
-        st.metric(
-            "Digital Dependence Score",
-            f"{dependence_score:.1f}"
-        )
 
+        st.markdown("### 📱 Digital Dependence")
+        st.progress(dependence_normalized)
+        st.write(f"Dependence Score: {dependence_score:.1f}")
+
+        if dependence_score < 40:
+            st.success("🟢 Low Digital Dependence")
+        elif dependence_score < 70:
+            st.warning("🟡 Moderate Digital Dependence")
+        else:
+            st.error("🔴 High Digital Dependence")
 
     st.subheader(
     "📈 Wellness Profile"
@@ -1023,12 +1019,6 @@ if st.button("Analyze"):
 
     if ai_explanation:
 
-        preview = (
-            ai_explanation[:180]
-            + "..."
-        )
-
-        st.info(preview)
 
         with st.expander(
             "🔍 Read Full Explanation"
