@@ -17,22 +17,16 @@ to transform behavioural and wellbeing indicators into actionable wellness insig
 
 Users provide demographic information, digital habits, sleep and lifestyle behaviours, and mental wellbeing indicators through an interactive assessment form.
 
-<p align="center">
-  <img src="images/question1.png" width="35%">
-  <img src="images/question2.png" width="45%">
-</p>
-
-<p align="center">
-  <img src="images/question3.png" width="45%">
-  <img src="images/question4.png" width="35%">
-</p>
-
-### Step 2: Define a Personal Goal 
-
 Users can specify a personal improvement goal (e.g., sleep quality, stress reduction, focus, or exercise). The AI incorporates this goal into explanations and personalized recommendations.
 
 <p align="center">
-  <img src="images/question5.png" width="70%">
+  <img src="images/question1.png" width="48%">
+  <img src="images/question2.png" width="48%">
+</p>
+
+<p align="center">
+  <img src="images/question3.png" width="48%">
+  <img src="images/question4.png" width="48%">
 </p>
 
 ### Personalized Results Dashboard 
@@ -48,7 +42,7 @@ The dashboard presents predicted wellness risk and digital dependence levels usi
 A radar chart summarizes key wellness dimensions including sleep, activity, stress management, focus, and happiness.
 
 <p align="center">
-  <img src="images/result2.png" width="65%">
+  <img src="images/result2.png" width="70%">
 </p>
 
 ### Explainable AI & Personalized Coaching
@@ -56,14 +50,13 @@ A radar chart summarizes key wellness dimensions including sleep, activity, stre
 Model explanations are informed by SHAP feature importance analysis and translated into user-friendly insights through OpenAI-powered explanations.
 
 <p align="center">
-  <img src="images/result3.png" width="48%">
-  <img src="images/result5.png" width="48%">
+  <img src="images/result3.png" width="70%">
 </p>
 
 ### Generative AI Wellness Planning
 The system generates a personalized 7-day wellness improvement plan that incorporates the user's behavioural patterns and stated improvement goals.
 <p align="center">
-  <img src="images/result4.png" width="80%">
+  <img src="images/result4.png" width="70%">
 </p>
 
 
