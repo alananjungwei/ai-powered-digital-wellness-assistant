@@ -31,35 +31,30 @@ lifestyle, and wellbeing indicators.
 )
 
 with st.sidebar:
-
+    # Enter own API Key
     st.header("🤖 AI Settings")
+    openai_api_key = st.text_input("OpenAI API Key", type="password")
 
-    openai_api_key = st.text_input(
-        "OpenAI API Key",
-        type="password"
-    )
-
-#st.success("Models loaded successfully!")
 
 # Level 1
 st.header("👤 About You")
 st.caption("Step 1 of 4: About You")
-
 user_name = st.text_input("What should I call you?")
 
 if user_name:
-    st.success(
-        f"Hello {user_name}! 👋"
-    )
+    st.success(f"Hello {user_name}! 👋")
 
-st.caption("Answer a few questions below to receive your personalized digital wellness assessment.")
+st.caption("Tell me something about yourself!")
 
-gender = st.selectbox(
+gender = st.radio(
     "Gender",
     [
-        "Male",
-        "Female"
-    ]
+        "👨 Male",
+        "👩 Female",
+        "🌈 Non-binary / Other",
+        "🙈 Prefer not to say"
+    ],
+    horizontal=True
 )
 
 
@@ -70,270 +65,335 @@ age = st.number_input(
     value=30
 )
 
-region = st.selectbox(
-    "Region",
+region = st.radio(
+    "Where are you based?",
     [
-        "Africa",
-        "Asia",
-        "Europe",
-        "Middle East",
-        "North America",
-        "South America"
+        "🦁 Africa",
+        "🐉 Asia",
+        "🏰 Europe",
+        "🕌 Middle East",
+        "🗽 North America",
+        "🦜 South America",
+        "🦘 Oceania"
     ]
 )
 
-education_level = st.selectbox(
-    "Education Level",
+education_level = st.radio(
+    "Highest education level completed?",
     [
-        "High School",
-        "Bachelor",
-        "Master",
-        "PhD"
-    ]
+        "🎓 High School",
+        "📘 Bachelor",
+        "📗 Master",
+        "🔬 PhD"
+    ],
+    horizontal=True
 )
 
-income_level = st.selectbox(
-    "Income Level",
+income_level = st.radio(
+    "How would you describe your current financial situation?",
     [
-        "Low",
-        "Lower-Mid",
-        "Upper-Mid",
-        "High"
-    ]
+        "💸 Limited",
+        "🙂 Comfortable",
+        "💼 Stable",
+        "✨ Very Comfortable"
+    ],
+    horizontal=True
 )
 
-daily_role = st.selectbox(
-    "Primary Daily Role",
+daily_role = st.radio(
+    "What best describes your daily routine?",
     [
-        "Student",
-        "Full-time Employee",
-        "Part-time/Shift",
-        "Caregiver/Home",
-        "Unemployed_Looking"
+        "🎓 Student",
+        "💼 Full-time Employee",
+        "🕒 Shift/Part-time",
+        "🏡 Caregiver/Home",
+        "🔍 Job Seeking"
     ]
 )
 
 st.header("📱 Digital Habits")
 st.caption("Step 2 of 4: Digital Habits")
 
-device_type = st.selectbox(
-    "Primary Device",
-    [
-        "Android",
-        "iPhone",
-        "Laptop",
-        "Tablet"
-    ]
+device_type = st.radio(
+    "What is your primary device?",
+    options=[
+        "🤖 Android",
+        "🍎 iPhone",
+        "💻 Laptop",
+        "📱 Tablet"
+    ],
+    horizontal = True
 )
 
-device_hours_text = st.select_slider(
+device_hours_text = st.radio(
     "How much time do you spend on digital devices each day?",
     options=[
-        "Very Little",
-        "Light Usage",
-        "Moderate Usage",
-        "Heavy Usage",
-        "Almost All Day"
+        "🟢 Very Little",
+        "🟡 Light Usage",
+        "🟠 Moderate Usage",
+        "🔴 Heavy Usage",
+        "🚨 Almost All Day"
     ],
-    value="Moderate Usage"
+    horizontal = True
 )
 
 device_hours_map = {
-    "Very Little": 1,
-    "Light Usage": 4,
-    "Moderate Usage": 8,
-    "Heavy Usage": 12,
-    "Almost All Day": 16
+    "🟢 Very Little": 1,
+    "🟡 Light Usage": 4,
+    "🟠 Moderate Usage": 8,
+    "🔴 Heavy Usage": 12,
+    "🚨 Almost All Day": 16
 }
 
-device_hours_per_day = device_hours_map[
-    device_hours_text
-]
+device_hours_per_day = (
+    device_hours_map[device_hours_text]
+)
 
-phone_unlocks_text = st.select_slider(
+phone_unlocks_text = st.radio(
     "How often do you find yourself reaching for your phone?",
     options=[
-        "Hardly Ever",
-        "Once in a While",
-        "Fairly Often",
-        "Very Often",
-        "Almost Constantly"
+        "🟢 Hardly Ever",
+        "🟡 Once in a While",
+        "🟠 Fairly Often",
+        "🔴 Very Often",
+        "🚨 Almost Constantly"
     ],
-    value="Fairly Often"
+    horizontal=True
 )
 
 phone_unlocks_map = {
-    "Hardly Ever": 0,
-    "Once in a While": 75,
-    "Fairly Often": 150,
-    "Very Often": 250,
-    "Almost Constantly": 350
+    "🟢 Hardly Ever": 0,
+    "🟡 Once in a While": 75,
+    "🟠 Fairly Often": 150,
+    "🔴 Very Often": 250,
+    "🚨 Almost Constantly": 350
 }
 
-phone_unlocks = phone_unlocks_map[
-    phone_unlocks_text
-]
+phone_unlocks = (
+    phone_unlocks_map[phone_unlocks_text]
+)
 
 st.header("🌙 Sleep & Lifestyle")
 st.caption("Step 3 of 4: Sleep & Lifestyle")
-
-physical_activity_days = st.slider(
-    "Physical Activity Days Per Week",
-    0,
-    7,
-    3
-)
-
-sleep_hours = st.slider(
-    "Sleep Hours Per Night",
-    3.0,
-    12.0,
-    7.0
+st.markdown(
+    """
+Your daily habits can strongly influence
+focus, stress, recovery, and overall wellbeing.
+"""
 )
 
 
-sleep_quality_text = st.select_slider(
-    "How would you rate your sleep quality recently?",
-    options=[
-        "Very Poor",
-        "Poor",
-        "Average",
-        "Good",
-        "Excellent"
+physical_activity_text = st.radio(
+    "How active have you been recently?",
+    [
+        "🛋️ Rarely Active",
+        "🚶 Lightly Active",
+        "🏃 Moderately Active",
+        "💪 Very Active"
     ],
-    value="Good"
+    horizontal=True
+)
+
+physical_activity_map = {
+    "🛋️ Rarely Active": 1,
+    "🚶 Lightly Active": 3,
+    "🏃 Moderately Active": 5,
+    "💪 Very Active": 7
+}
+
+physical_activity_days = (
+    physical_activity_map[
+        physical_activity_text
+    ]
+)
+
+sleep_text = st.radio(
+    "How much sleep do you usually get?",
+    [
+        "😴 Very Little Sleep",
+        "🛌 Slightly Sleep Deprived",
+        "🙂 Adequate Sleep",
+        "✨ Well Rested"
+    ],
+    horizontal=True
+)
+
+sleep_map = {
+    "😴 Very Little Sleep": 4,
+    "🛌 Slightly Sleep Deprived": 6,
+    "🙂 Adequate Sleep": 7.5,
+    "✨ Well Rested": 9
+}
+
+sleep_hours = sleep_map[sleep_text]
+
+
+sleep_quality_text = st.radio(
+    "How would you rate your sleep quality recently?",
+    [
+        "😴 Very Poor",
+        "😕 Poor",
+        "😐 Average",
+        "🙂 Good",
+        "✨ Excellent"
+    ],
+    horizontal=True
 )
 
 sleep_quality_map = {
-    "Very Poor": 1,
-    "Poor": 2,
-    "Average": 3,
-    "Good": 4,
-    "Excellent": 5
+    "😴 Very Poor": 1,
+    "😕 Poor": 2,
+    "😐 Average": 3,
+    "🙂 Good": 4,
+    "✨ Excellent": 5
 }
 
 sleep_quality = sleep_quality_map[sleep_quality_text]
 
 st.header("🧠 Mental Wellbeing")
+
 st.caption("Step 4 of 4: Mental Wellbeing")
 
-anxiety_text = st.select_slider(
-    "How anxious have you felt recently?",
-    options=[
-        "Very Calm",
-        "Slightly Worried",
-        "Moderately Anxious",
-        "Quite Anxious",
-        "Extremely Anxious"
+st.markdown(
+    """
+These questions help the assistant understand
+how you've been feeling emotionally and mentally lately.
+
+Remember, there are no right or wrong answers, just choose
+what feels most accurate for you.
+
+This is a safe space. You can be honest 🙂. 
+"""
+)
+
+
+anxiety_text = st.radio(
+    "How have your worries or anxious thoughts felt recently?",
+    [
+        "😌 Calm & Relaxed",
+        "🙂 Occasionally Worried",
+        "😐 Somewhat Anxious",
+        "😟 Frequently Anxious",
+        "😣 Constantly Overwhelmed"
     ],
-    value="Moderately Anxious"
+    horizontal=True
 )
 
 anxiety_map = {
-    "Very Calm": 0,
-    "Slightly Worried": 6,
-    "Moderately Anxious": 12,
-    "Quite Anxious": 18,
-    "Extremely Anxious": 25
+    "😌 Calm & Relaxed": 0,
+    "🙂 Occasionally Worried": 6,
+    "😐 Somewhat Anxious": 12,
+    "😟 Frequently Anxious": 18,
+    "😣 Constantly Overwhelmed": 25
 }
 
-anxiety_score = anxiety_map[anxiety_text]
+anxiety_score = anxiety_map[
+    anxiety_text
+]
 
 # Depression Score
 
-depression_text = st.select_slider(
-    "How low or down have you been feeling recently?",
-    options=[
-        "Very Positive",
-        "Occasionally Down",
-        "Somewhat Low",
-        "Frequently Down",
-        "Extremely Low"
+depression_text = st.radio(
+    "How has your mood been recently?",
+    [
+        "✨ Positive & Motivated",
+        "🙂 Mostly Okay",
+        "😐 Emotionally Tired",
+        "😔 Frequently Low",
+        "😞 Very Drained"
     ],
-    value="Somewhat Low"
+    horizontal=True
 )
 
 depression_map = {
-    "Very Positive": 0,
-    "Occasionally Down": 6,
-    "Somewhat Low": 12,
-    "Frequently Down": 18,
-    "Extremely Low": 25
+    "✨ Positive & Motivated": 0,
+    "🙂 Mostly Okay": 6,
+    "😐 Emotionally Tired": 12,
+    "😔 Frequently Low": 18,
+    "😞 Very Drained": 25
 }
 
-depression_score = depression_map[depression_text]
+depression_score = depression_map[
+    depression_text
+]
 
 # Stress level
 
-stress_text = st.select_slider(
-    "How stressed do you feel in your daily life?",
-    options=[
-        "Very Relaxed",
-        "Mostly Relaxed",
-        "Moderately Stressed",
-        "Highly Stressed",
-        "Overwhelmed"
+stress_text = st.radio(
+    "How demanding or stressful has daily life felt lately?",
+    [
+        "🌿 Peaceful",
+        "🙂 Manageable",
+        "😐 Busy but Coping",
+        "😟 Quite Stressful",
+        "🔥 Completely Overloaded"
     ],
-    value="Moderately Stressed"
+    horizontal=True
 )
 
 stress_map = {
-    "Very Relaxed": 1,
-    "Mostly Relaxed": 3,
-    "Moderately Stressed": 5,
-    "Highly Stressed": 8,
-    "Overwhelmed": 10
+    "🌿 Peaceful": 1,
+    "🙂 Manageable": 3,
+    "😐 Busy but Coping": 5,
+    "😟 Quite Stressful": 8,
+    "🔥 Completely Overloaded": 10
 }
 
-stress_level = stress_map[stress_text]
+stress_level = stress_map[
+    stress_text
+]
 
 # Happiness score 
 
-happiness_text = st.select_slider(
-    "How happy and satisfied have you felt recently?",
-    options=[
-        "Very Unhappy",
-        "Somewhat Unhappy",
-        "Neutral",
-        "Happy",
-        "Very Happy"
+happiness_text = st.radio(
+    "How satisfied and emotionally balanced have you felt recently?",
+    [
+        "😞 Very Unhappy",
+        "🙁 Slightly Unhappy",
+        "😐 Neutral",
+        "🙂 Generally Happy",
+        "✨ Very Happy"
     ],
-    value="Neutral"
+    horizontal=True
 )
 
 happiness_map = {
-    "Very Unhappy": 0,
-    "Somewhat Unhappy": 3,
-    "Neutral": 5,
-    "Happy": 8,
-    "Very Happy": 10
+    "😞 Very Unhappy": 0,
+    "🙁 Slightly Unhappy": 3,
+    "😐 Neutral": 5,
+    "🙂 Generally Happy": 8,
+    "✨ Very Happy": 10
 }
 
-happiness_score = happiness_map[happiness_text]
+happiness_score = happiness_map[
+    happiness_text
+]
 
 # Focus score 
 
-focus_text = st.select_slider(
-    "How well have you been able to concentrate recently?",
-    options=[
-        "Cannot Focus",
-        "Easily Distracted",
-        "Average Focus",
-        "Good Focus",
-        "Laser Focused"
+focus_text = st.radio(
+    "How focused and mentally clear have you felt recently?",
+    [
+        "😵 Unable to Focus",
+        "😵‍💫 Easily Distracted",
+        "😐 Average Focus",
+        "🙂 Mostly Focused",
+        "🎯 Highly Focused"
     ],
-    value="Average Focus"
+    horizontal=True
 )
 
 focus_map = {
-    "Cannot Focus": 0,
-    "Easily Distracted": 25,
-    "Average Focus": 50,
-    "Good Focus": 75,
-    "Laser Focused": 100
+    "😵 Unable to Focus": 0,
+    "😵‍💫 Easily Distracted": 25,
+    "😐 Average Focus": 50,
+    "🙂 Mostly Focused": 75,
+    "🎯 Highly Focused": 100
 }
 
-focus_score = focus_map[focus_text]
+focus_score = focus_map[
+    focus_text
+]
 
 # Personal goal 
 st.header("🎯 Personal Goal")
@@ -343,17 +403,11 @@ user_goal = st.text_area(
     placeholder=
     """
 Examples:
-
 • I want to sleep better
-
 • I want to spend less time on my phone
-
 • I want to worry less
-
 • I want to be more productive
-
 • I want to exercise more
-
 • I want to improve my focus
 """
 )
