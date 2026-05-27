@@ -406,7 +406,7 @@ pip install -r requirements.txt
 Launch the application:
 
 ```bash
-streamlit run app_openai.py
+streamlit run app.py
 ```
 
 ---

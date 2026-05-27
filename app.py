@@ -818,7 +818,6 @@ if st.button("Analyze"):
             • Sleep Duration: {sleep_hours} hours/night
             • Device Usage: {device_hours_per_day} hours/day
             • Phone Unlocks: {phone_unlocks}/day
-            • Physical Activity Days: {physical_activity_days}/week
             • Mental Burden Score: {user_df['mental_burden'].iloc[0]:.1f}
             • Screen-to-Sleep Ratio: {user_df['screen_sleep_ratio'].iloc[0]:.2f}
             • Activity-Sleep Balance: {user_df['activity_sleep'].iloc[0]:.1f}
