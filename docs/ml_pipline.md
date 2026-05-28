@@ -35,7 +35,7 @@ Several engineered features were created to improve predictive performance.
 |**Engineered Feature**|**Description**|
 |------------------|-----------|
 |screen_sleep_ratio	|Relationship between screen time and sleep|
-|ocial_media_ratio	|Social media usage proportion
+|social_media_ratio	|Social media usage proportion
 |notifications_per_hour	|Notification intensity
 |mental_burden	|Combined anxiety, depression, and stress indicator
 |wellbeing_index	|Combined happiness, focus, and sleep quality score
