@@ -10,6 +10,13 @@ The application combines:
 
 Built with Streamlit, Scikit_Learn, SHAP, and OpenAI. 
 
+# 📊 Data Source 
+
+This project utilizes the Digital Lifestyle Benchmark Dataset (2025) published on Hugging Face by Tarek Masryo.
+
+https://huggingface.co/datasets/tarekmasryo/digital-lifestyle-benchmark-dataset
+
+
 # ✨ Key Features
 * 📊 Wellness Risk Prediction
 * 📱 Digital Dependence Scoring
